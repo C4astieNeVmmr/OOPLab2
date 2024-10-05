@@ -112,31 +112,25 @@ class CstrArray{
     int capacity;
     int len;//instead of size
     public:
-    int& getLength(){
-        return this->len;
-    }
-    int getCapacity(){
-        return this->capacity;
-    }
     CstrArray(int l=1){
         this->data = new Cstr[l];
-        (*this).getLength()=0;
+        this->len = 0;
         this->capacity = l;
     }
     ~CstrArray(){
         //delete[] data;
     }
     Cstr& operator[](int index){
-        if(index>=(*this).getLength()){
+        if(index>=this->len){
             throw std::out_of_range("");
         }
         return this->data[index];
     }
     CstrArray& operator+=(Cstr strA){
-        if((*this).getCapacity()<=(*this).getLength()){
+        if(this->capacity<=this->len){
             throw std::out_of_range("there is no capacity left");
         }
-        (*this)[++(*this).getLength()-1] = strA;
+        this->data[++this->len-1] = strA;
         return *this;
     }
     CstrArray& sort(){
@@ -146,10 +140,16 @@ class CstrArray{
 
     }
     friend std::ostream& operator<<(std::ostream& os,CstrArray arr){
-        for(int i=0;i<arr.getLength();i++){
+        for(int i=0;i<arr.len;i++){
             os << arr[i] << " ";
         }
         return os;
+    }
+    int getLength(){
+        return this->len;
+    }
+    int getCapacity(){
+        return this->capacity;
     }
 };
 
