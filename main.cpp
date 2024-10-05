@@ -118,29 +118,35 @@ bool isAComesAfterB(Cstr strA,Cstr strB){
 }
 
 class CstrArray{
-    Cstr *data;
+    Cstr **data;
     int capacity;
     int len;//instead of size
     public:
     CstrArray(int l=1){
-        this->data = new Cstr[l];
+        this->data = new Cstr*[l];
         this->len = 0;
         this->capacity = l;
     }
     ~CstrArray(){
-        //delete[] data;
+        delete[] data;
     }
     Cstr& operator[](int index){
         if(index>=this->len){
             throw std::out_of_range("");
         }
-        return this->data[index];
+        return *(this->data[index]);
     }
-    CstrArray& operator+=(Cstr strA){
+    const Cstr& operator[](int index)const{
+        if(index>=this->len){
+            throw std::out_of_range("");
+        }
+        return *(this->data[index]);
+    }
+    CstrArray& operator+=(Cstr *strA){
         if(this->capacity<=this->len){
             throw std::out_of_range("there is no capacity left");
-        }
-        this->data[++this->len-1] = strA;
+        };
+        this->data[this->len++] = strA;
         return *this;
     }
     void sort(bool(*op)(Cstr,Cstr)=isALongerB){
@@ -162,7 +168,7 @@ class CstrArray{
         }
         return 1;
     }
-    friend std::ostream& operator<<(std::ostream& os,CstrArray arr){
+    friend std::ostream& operator<<(std::ostream& os,const CstrArray& arr){
         for(int i=0;i<arr.len;i++){
             os << arr[i] << " ";
         }
@@ -177,6 +183,7 @@ class CstrArray{
 };
 
 int main(){
+<<<<<<< HEAD
     CstrArray arr(10);
     Cstr str1("ABCD"),str2("LM"),str3("ZXC"),str4("AAAAA"),str5("QW");
     arr+=str1;
@@ -190,5 +197,7 @@ int main(){
     std::cout << "\n";
     arr.sort(isAComesAfterB);//sort by Cstr value
     std::cout << arr << "\t" << " is arr sorted - " << arr.isSorted(isAComesAfterB) << "\n\n";
+=======
+>>>>>>> CstrArray stores poniters to Cstr's, so Cstr on which points from array is the same as outside array
     return 0;
 }
