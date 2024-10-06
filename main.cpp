@@ -133,11 +133,24 @@ class CstrArray{
         this->data[++this->len-1] = strA;
         return *this;
     }
-    CstrArray& sort(){
-
+    void sort(){
+        for (int i=0;i<this->len-1;i++) {
+            for (int j=0;j<this->len-i-1;j++) {
+                if (this->data[j].getLength() > this->data[j+1].getLength()){
+                    Cstr buffer = this->data[j];
+                    this->data[j]=this->data[j+1];
+                    this->data[j+1]=buffer;
+                }
+            }
+        }
     }
     bool isSorted(){
-
+        for(int i=0;i<(this->len)-1;i++){
+            if((this->data[i].getLength())>(this->data[i+1].getLength())){
+                return 0;
+            }
+        }
+        return 1;
     }
     friend std::ostream& operator<<(std::ostream& os,CstrArray arr){
         for(int i=0;i<arr.len;i++){
@@ -155,11 +168,14 @@ class CstrArray{
 
 int main(){
     CstrArray arr(10);
-    Cstr str1("ABC"),str2("LMN"),str3("ZXC"),str4("AAA");
+    Cstr str1("ABCD"),str2("LM"),str3("ZXC"),str4("AAAAA"),str5("QW");
     arr+=str1;
     arr+=str2;
     arr+=str3;
     arr+=str4;
-    std::cout << arr;
+    arr+=str5;
+    std::cout << arr << "\t" << " is arr sorted - " << arr.isSorted() << "\n\n";
+    arr.sort();
+    std::cout << arr << "\t" << " is arr sorted - " << arr.isSorted() << "\n\n";
     return 0;
 }
