@@ -152,8 +152,8 @@ class CstrArray{
     void sort(bool(*op)(Cstr,Cstr)=isALongerB){
         for (int i=0;i<this->len-1;i++) {
             for (int j=0;j<this->len-i-1;j++) {
-                if (op(this->data[j],this->data[j+1])){
-                    Cstr buffer = this->data[j];
+                if (op(*(this->data)[j],*(this->data)[j+1])){
+                    Cstr* buffer = this->data[j];
                     this->data[j]=this->data[j+1];
                     this->data[j+1]=buffer;
                 }
@@ -162,7 +162,7 @@ class CstrArray{
     }
     bool isSorted(bool(*op)(Cstr,Cstr)=isALongerB){
         for(int i=0;i<(this->len)-1;i++){
-            if(op(this->data[i],this->data[i+1])){
+            if(op(*(this->data)[i],*(this->data)[i+1])){
                 return 0;
             }
         }
@@ -183,21 +183,18 @@ class CstrArray{
 };
 
 int main(){
-<<<<<<< HEAD
     CstrArray arr(10);
     Cstr str1("ABCD"),str2("LM"),str3("ZXC"),str4("AAAAA"),str5("QW");
-    arr+=str1;
-    arr+=str2;
-    arr+=str3;
-    arr+=str4;
-    arr+=str5;
+    arr+=&str1;
+    arr+=&str2;
+    arr+=&str3;
+    arr+=&str4;
+    arr+=&str5;
     std::cout << arr << "\t" << " is arr sorted - " << arr.isSorted(isALongerB) << "\n\n";
     arr.sort();//sort by Cstr length
     std::cout << arr << "\t" << " is arr sorted - " << arr.isSorted() << "\n\n";
     std::cout << "\n";
     arr.sort(isAComesAfterB);//sort by Cstr value
     std::cout << arr << "\t" << " is arr sorted - " << arr.isSorted(isAComesAfterB) << "\n\n";
-=======
->>>>>>> CstrArray stores poniters to Cstr's, so Cstr on which points from array is the same as outside array
     return 0;
 }
