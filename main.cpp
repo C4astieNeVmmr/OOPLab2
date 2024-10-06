@@ -86,6 +86,9 @@ public:
             if (this->str[i] > strB.str[i]) {
                 return 1;
             }
+            if (this->str[i] < strB.str[i]) {
+                return 0;
+            }
         }
         return i == (this->length - 1);
     }
@@ -106,6 +109,13 @@ public:
         return this->length;
     }
 };
+
+bool isALongerB(Cstr strA,Cstr strB){
+    return strA.getLength()>strB.getLength();
+}
+bool isAComesAfterB(Cstr strA,Cstr strB){
+    return strA>strB;
+}
 
 class CstrArray{
     Cstr *data;
@@ -133,10 +143,10 @@ class CstrArray{
         this->data[++this->len-1] = strA;
         return *this;
     }
-    void sort(){
+    void sort(bool(*op)(Cstr,Cstr)=isALongerB){
         for (int i=0;i<this->len-1;i++) {
             for (int j=0;j<this->len-i-1;j++) {
-                if (this->data[j].getLength() > this->data[j+1].getLength()){
+                if (op(this->data[j],this->data[j+1])){
                     Cstr buffer = this->data[j];
                     this->data[j]=this->data[j+1];
                     this->data[j+1]=buffer;
@@ -144,9 +154,9 @@ class CstrArray{
             }
         }
     }
-    bool isSorted(){
+    bool isSorted(bool(*op)(Cstr,Cstr)=isALongerB){
         for(int i=0;i<(this->len)-1;i++){
-            if((this->data[i].getLength())>(this->data[i+1].getLength())){
+            if(op(this->data[i],this->data[i+1])){
                 return 0;
             }
         }
@@ -174,8 +184,11 @@ int main(){
     arr+=str3;
     arr+=str4;
     arr+=str5;
+    std::cout << arr << "\t" << " is arr sorted - " << arr.isSorted(isALongerB) << "\n\n";
+    arr.sort();//sort by Cstr length
     std::cout << arr << "\t" << " is arr sorted - " << arr.isSorted() << "\n\n";
-    arr.sort();
-    std::cout << arr << "\t" << " is arr sorted - " << arr.isSorted() << "\n\n";
+    std::cout << "\n";
+    arr.sort(isAComesAfterB);//sort by Cstr value
+    std::cout << arr << "\t" << " is arr sorted - " << arr.isSorted(isAComesAfterB) << "\n\n";
     return 0;
 }
